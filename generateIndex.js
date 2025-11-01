@@ -1,7 +1,7 @@
 import { promises as fs } from "fs";
 import path from "path";
 
-const contentDir = path.resolve("src/content");
+const contentDir = path.resolve("content");
 const outputFile = path.join(contentDir, "index.json");
 
 async function generateIndex() {
