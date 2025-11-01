@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <script>
+    (function () {
+      const ls = localStorage.getItem("ripe:theme");
+      const theme = ls || "light";
+      document.documentElement.classList.toggle("dark", theme === "dark");
+      window.__ripeTheme__ = theme;
+    })();
+  </script>
+  <link id="mdTheme" rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/github-markdown-css@5.8.1/github-markdown-light.min.css" />
+  <link id="hlTheme" rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/github.min.css"
+    integrity="sha512-0aPQyyeZrWj9sCA46UlmWgKOP0mUipLQ6OZXu8l4IcAmD2u31EPEy9VcIMvl7SoAaKe8bLXZhYoMaE/in+gcgA=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="/styles.css" />
+  <script defer src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"
+    integrity="sha512-EBLzUL8XLl+va/zAsmXwS7Z2B1F9HUHkZwyS/VKwh3S7T/U0nF4BaU29EP/ZSf6zgiIxYAnKLu6bJ8dqpmX5uw=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <title>Ripe Programming Language Specification</title>
+</head>
+
+<body class="initially-hidden">
+  <header id="topbar">
+    <div class="bar">
+      <button id="sidebarBtnLeft" class="icon-btn" title="Manuals"><i data-lucide="panel-left"></i></button>
+      <div id="siteTitle">Ripe Programming Language Specification</div>
+      <div style="justify-self:end;">
+        <button id="themeToggle" class="icon-btn" title="Toggle theme"><i id="themeIcon"
+            data-lucide="moon"></i></button>
+      </div>
+    </div>
+  </header>
+
+  <div id="sidebarOverlayLeft"></div>
+  <aside id="sidebarLeft">
+    <div class="top">
+      <div id="sidebarHeading">Specification</div>
+      <button id="sidebarCloseLeft" class="icon-btn" aria-label="Close">✕</button>
+    </div>
+    <nav id="sidebarList"></nav>
+  </aside>
+
+  <main id="mainContent">
+    <section id="contentHtml" class="hidden"></section>
+    <div id="messages">
+      <p style="color:#666;">Browse the manuals from the sidebar.</p>
+    </div>
+    <div style="height:6rem;"></div>
+  </main>
+
+  <script type="module" src="/app.js"></script>
+</body>
+
+</html>

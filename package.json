@@ -1,0 +1,21 @@
+{
+  "name": "ripe-manuals",
+  "version": "1.0.0",
+  "description": "",
+  "main": "generateIndex.js",
+  "type": "module",
+  "scripts": {
+    "build:index": "node generateIndex.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ripe-lang/docs.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ripe-lang/docs/issues"
+  },
+  "homepage": "https://github.com/ripe-lang/docs#readme"
+}
