@@ -43,6 +43,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   function showWelcome() {
     loadContent("./content/welcome.md");
+    sidebarList.querySelectorAll("a").forEach((a) => a.classList.remove("active"));
+    sidebarList.querySelector("a").classList.add("active");
   }
 
   function renderMarkdown(markdown) {
@@ -54,7 +56,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     } catch {}
 
     siteTitle.style.visibility = "hidden";
-    messages.classList.add("hidden");
   }
 
   async function loadContent(path) {
