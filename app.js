@@ -29,12 +29,12 @@ document.addEventListener("DOMContentLoaded", async () => {
     document.documentElement.classList.toggle("dark", isDark);
 
     mdTheme.href = isDark
-      ? "https://cdn.jsdelivr.net/npm/github-markdown-css@5.8.1/github-markdown-dark.min.css"
-      : "https://cdn.jsdelivr.net/npm/github-markdown-css@5.8.1/github-markdown-light.min.css";
+      ? "https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.8.1/github-markdown-dark.min.css"
+      : "https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.8.1/github-markdown-light.min.css";
 
     hlTheme.href = isDark
-      ? "https://cdn.jsdelivr.net/npm/highlight.js@11.11.0/styles/github-dark.min.css"
-      : "https://cdn.jsdelivr.net/npm/highlight.js@11.11.0/styles/github.min.css";
+      ? "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/github-dark.min.css"
+      : "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/github.min.css";
 
     themeIcon.setAttribute("data-lucide", isDark ? "sun" : "moon");
     lucide.createIcons();
@@ -131,6 +131,10 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     if (!contentHtml.classList.contains("hidden")) {
       try {
+        document.querySelectorAll("code.hljs").forEach((block) => {
+          block.classList.remove("hljs");
+          block.removeAttribute("data-highlighted");
+        });
         hljs.highlightAll();
       } catch {}
     }
