@@ -13,13 +13,13 @@ async function generateIndex() {
     const text = await fs.readFile(fullPath, "utf8");
     const match = text.match(/^#\s+(.*)/m);
     const title = match ? match[1].trim() : entry.name.replace(/\.md$/i, "");
-    files.push({ title, path: `/content/${entry.name}` });
+    files.push({ title, path: `./content/${entry.name}` });
   }
   await fs.writeFile(outputFile, JSON.stringify(files, null, 2));
   console.log(`Generated ${files.length} entries → ${outputFile}`);
 }
 
-generateIndex().catch(err => {
+generateIndex().catch((err) => {
   console.error("Error generating index:", err);
   process.exit(1);
 });
