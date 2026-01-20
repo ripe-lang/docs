@@ -1,5 +1,9 @@
 [
   {
+    "title": "Home",
+    "path": "./content/welcome.md"
+  },
+  {
     "title": "Lexical Structure",
     "path": "./content/01-lexical.md"
   }

@@ -42,10 +42,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   function showWelcome() {
-    contentHtml.classList.add("hidden");
-    siteTitle.style.visibility = "visible";
-    messages.classList.remove("hidden");
-    localStorage.removeItem("ripe:lastPath");
+    loadContent("./content/welcome.md");
   }
 
   function renderMarkdown(markdown) {
@@ -114,7 +111,8 @@ document.addEventListener("DOMContentLoaded", async () => {
             a.classList.toggle("active", a.dataset.path === lastPath),
           );
       } else {
-        showWelcome();
+        await loadContent("./content/welcome.md");
+        sidebarList.querySelector("a").classList.add("active");
       }
     } catch {
       showWelcome();
