@@ -4,6 +4,8 @@
 
 import { marked as marked } from "https://cdn.jsdelivr.net/npm/marked/lib/marked.esm.js";
 
+let index = [];
+
 document.addEventListener("DOMContentLoaded", async () => {
   if (window.lucide && typeof lucide.createIcons === "function") {
     lucide.createIcons();
@@ -42,8 +44,10 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   function showWelcome() {
-    loadContent("./content/welcome.md");
-    sidebarList.querySelectorAll("a").forEach((a) => a.classList.remove("active"));
+    navigateTo("./content/welcome.md", false);
+    sidebarList
+      .querySelectorAll("a")
+      .forEach((a) => a.classList.remove("active"));
     sidebarList.querySelector("a").classList.add("active");
   }
 
@@ -59,7 +63,8 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   async function loadContent(path) {
-    const response = await fetch(path);
+    const url = new URL(path, window.location.origin);
+    const response = await fetch(url.pathname);
 
     if (!response.ok) {
       throw new Error("Failed to load");
@@ -70,6 +75,18 @@ document.addEventListener("DOMContentLoaded", async () => {
     localStorage.setItem("ripe:lastPath", path);
   }
 
+  function navigateTo(path, pushState = true) {
+    const item = index.find((i) => i.path === path);
+    const slug = item ? slugify(item.title, { lower: true }) : "home";
+    const url = "/" + slug;
+
+    if (pushState) {
+      history.pushState({}, "", url);
+    }
+
+    loadContent(path);
+  }
+
   async function init() {
     try {
       const indexPath = window.location.pathname.startsWith("/src")
@@ -77,7 +94,9 @@ document.addEventListener("DOMContentLoaded", async () => {
         : "./content/index.json";
 
       const response = await fetch(indexPath);
-      const index = await response.json();
+      index = await response.json();
+
+      sidebarList.innerHTML = "";
 
       for (const item of index) {
         const link = document.createElement("a");
@@ -87,7 +106,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         link.addEventListener("click", async (e) => {
           e.preventDefault();
-          await loadContent(item.path);
+          navigateTo(item.path);
 
           sidebarList
             .querySelectorAll("a")
@@ -102,18 +121,18 @@ document.addEventListener("DOMContentLoaded", async () => {
         sidebarList.appendChild(link);
       }
 
-      const lastPath = localStorage.getItem("ripe:lastPath");
+      const slug = window.location.pathname.slice(1) || "home";
+      const slugMatch = index.find((i) => slugify(i.title) === slug);
 
-      if (lastPath) {
-        await loadContent(lastPath);
+      if (slugMatch) {
+        await loadContent(slugMatch.path);
         sidebarList
           .querySelectorAll("a")
           .forEach((a) =>
-            a.classList.toggle("active", a.dataset.path === lastPath),
+            a.classList.toggle("active", a.dataset.path === slugMatch.path),
           );
       } else {
-        await loadContent("./content/welcome.md");
-        sidebarList.querySelector("a").classList.add("active");
+        showWelcome();
       }
     } catch {
       showWelcome();
@@ -139,6 +158,21 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   });
 
+  window.addEventListener("popstate", async () => {
+    const slug = window.location.pathname.slice(1) || "home";
+    const item = index.find((i) => slugify(i.title, { lower: true }) === slug);
+    if (item) {
+      await loadContent(item.path);
+      sidebarList
+        .querySelectorAll("a")
+        .forEach((a) =>
+          a.classList.toggle("active", a.dataset.path === item.path),
+        );
+    } else {
+      showWelcome();
+    }
+  });
+
   await init();
 
   sidebarBtn.onclick = () => {
@@ -151,7 +185,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     sidebarOverlay.classList.remove("active");
   };
 
-  siteTitle.onclick = showWelcome;
+  siteTitle.onclick = () => navigateTo("content/welcome.md");
 
   sidebarHeading.onclick = () => {
     showWelcome();
